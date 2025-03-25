@@ -40,7 +40,7 @@ void main() {
 
     vec2 z = vec2(0.0);
     int iterations = 0;
-    const int MAX_ITERATIONS = 100;
+    const int MAX_ITERATIONS = 10000;
 
     for (int i = 0; i < MAX_ITERATIONS; i++) {
         if (z.x * z.x + z.y * z.y > 4.0) {
