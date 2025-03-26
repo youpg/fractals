@@ -1,5 +1,6 @@
 #ifdef GL_ES
-precision mediump float;
+precision highp float;
+precision highp int;
 #endif
 
 varying vec2 v_texcoord;
@@ -7,6 +8,7 @@ varying vec2 v_texcoord;
 uniform vec2 u_screen_size;
 uniform vec2 u_view_min;
 uniform vec2 u_view_max;
+uniform int u_max_iterations;
 
 vec3 get_color(float t) {
     vec3 dark_blue = vec3(0.0, 7.0/255.0, 100.0/255.0);
@@ -40,9 +42,8 @@ void main() {
 
     vec2 z = vec2(0.0);
     int iterations = 0;
-    const int MAX_ITERATIONS = 10000;
 
-    for (int i = 0; i < MAX_ITERATIONS; i++) {
+    for (int i = 0; i < u_max_iterations; i++) {
         if (z.x * z.x + z.y * z.y > 4.0) {
             break;
         }
@@ -52,10 +53,10 @@ void main() {
         iterations++;
     }
 
-    if (iterations >= 100) {
+    if (iterations >= u_max_iterations) {
         gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
     } else {
-        float t = float(iterations) / 100.0;
+        float t = float(iterations) / float(u_max_iterations);
         vec3 color = get_color(t);
         gl_FragColor = vec4(color, 1.0);
     }
