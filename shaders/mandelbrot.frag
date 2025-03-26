@@ -5,10 +5,11 @@ precision highp int;
 
 varying vec2 v_texcoord;
 
-uniform vec2 u_screen_size;
-uniform vec2 u_view_min;
-uniform vec2 u_view_max;
+uniform vec2 u_screen_dimensions;
+uniform vec2 u_viewport_min;
+uniform vec2 u_viewport_max;
 uniform int u_max_iterations;
+uniform float u_escape_radius;
 
 vec3 get_color(float t) {
     vec3 dark_blue = vec3(0.0, 7.0/255.0, 100.0/255.0);
@@ -36,15 +37,15 @@ vec3 get_color(float t) {
 
 void main() {
     vec2 c = vec2(
-        u_view_min.x + v_texcoord.x * (u_view_max.x - u_view_min.x),
-        u_view_min.y + v_texcoord.y * (u_view_max.y - u_view_min.y)
+        u_viewport_min.x + v_texcoord.x * (u_viewport_max.x - u_viewport_min.x),
+        u_viewport_min.y + v_texcoord.y * (u_viewport_max.y - u_viewport_min.y)
     );
 
     vec2 z = vec2(0.0);
     int iterations = 0;
 
     for (int i = 0; i < u_max_iterations; i++) {
-        if (z.x * z.x + z.y * z.y > 4.0) {
+        if (z.x * z.x + z.y * z.y > u_escape_radius) {
             break;
         }
         float x_new = z.x * z.x - z.y * z.y + c.x;
